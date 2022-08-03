@@ -1,5 +1,5 @@
 import java.util.Scanner;
-public class WhatsTheRecursion_BJ17478 {
+public class BJ17478_WhatsTheRecursion {
 
         public static void main(String[] args) {
             Scanner sc = new Scanner(System.in);

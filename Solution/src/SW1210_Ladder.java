@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Ladder_SWEA1210 {
+public class SW1210_Ladder {
 
     static int[][] map = new int[100][100];
     static int[] dx = {0,0,-1};
