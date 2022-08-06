@@ -1,48 +1,38 @@
+package baekjoon;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class BJ15663_N과M9 {
+public class BJ15652_N과M4 {
 
     public static int n,m;
     public static int[] arr;
-    public static int[] temp;
-    public static StringBuilder sb;
-
-    public static void main(String[] args) throws Exception{
+    static StringBuilder sb;
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-
+        sb = new StringBuilder();
         n = Integer.parseInt(st.nextToken());
         m = Integer.parseInt(st.nextToken());
         arr = new int[m];
-        temp = new int[n];
-        sb = new StringBuilder();
 
-        st = new StringTokenizer(br.readLine());
-
-        for(int i=0; i<n; i++){
-            temp[i] = Integer.parseInt(st.nextToken());
-        }
-
-        Arrays.sort(temp);
-
-        dfs(0);
+        dfs(0,1);
         System.out.println(sb.toString());
     }
 
-    public static void dfs(int depth) {
-        if(depth == m){
+    private static void dfs(int cnt,int start) {
+        if(cnt==m){
             for(int i=0; i<m; i++){
                 sb.append(arr[i]+" ");
             }
             sb.append("\n");
             return;
         }
-        for(int i=0; i<n; i++){
-            arr[depth] = temp[i];
-            dfs(depth+1);
+
+        for(int i=start; i<=n; i++){
+            arr[cnt] = i;
+            dfs(cnt+1,arr[cnt]);
         }
     }
 }

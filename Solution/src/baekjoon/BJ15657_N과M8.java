@@ -1,14 +1,16 @@
+package baekjoon;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class BJ15655_N과M6{
+public class BJ15657_N과M8 {
     static int n,m;
     static int[] arr;
     static int[] temp;
-    static boolean[] ch;
     static StringBuilder sb;
+    static boolean[] ch;
 
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,18 +20,18 @@ public class BJ15655_N과M6{
         m = Integer.parseInt(st.nextToken());
         arr = new int[m];
         st = new StringTokenizer(br.readLine());
-        ch = new boolean[n];
         temp = new int[n];
+        ch = new boolean[n];
 
         for(int i=0; i<n; i++){
             temp[i] = Integer.parseInt(st.nextToken());
         }
         Arrays.sort(temp);
         dfs(0,0);
-        System.out.println(sb.toString());
+        System.out.print(sb.toString());
     }
 
-    private static void dfs(int cnt, int start) {
+    private static void dfs(int cnt,int start) {
         if(cnt == m){
             for(int i=0; i<m; i++){
                 sb.append(arr[i]+" ");
@@ -39,13 +41,8 @@ public class BJ15655_N과M6{
         }
 
         for(int i=start; i<n; i++){
-            if(ch[i]){
-                continue;
-            }
             arr[cnt] = temp[i];
-            ch[i] = true;
-            dfs(cnt+1,i+1);
-            ch[i] = false;
+            dfs(cnt+1,i);
         }
     }
 }

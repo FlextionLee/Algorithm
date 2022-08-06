@@ -1,3 +1,5 @@
+package studygroup;
+
 import java.util.*;
 
 public class MuziLive {
