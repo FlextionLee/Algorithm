@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
-    public class  SwitchOnAndOff {
+    public class BJ1244_스위치_켜고_끄기 {
 
         //스위치를 키고 끄는 함수를 만들기 위해 스태틱 불린 배열 선언
         static boolean[] switches;
@@ -59,7 +59,7 @@ import java.util.StringTokenizer;
             }
             //학생 수 받기
             int student = Integer.parseInt(br.readLine());
-            //정보 받아서 성별, 받은 수 나눠서 push함수에 넣기
+            //정보 받아서 성별, 받은 수 나눠서 함수에 넣기
             for (int i = 0; i < student; i++) {
                 st = new StringTokenizer(br.readLine());
                 int gender = Integer.parseInt(st.nextToken());

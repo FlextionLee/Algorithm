@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class ChessRepainting{
+public class BJ1018_체스판_다시_칠하기 {
 	
 /*	지민이는 자신의 저택에서 MN개의 단위 정사각형으로 나누어져 있는 
  *  M×N 크기의 보드를 찾았다. 어떤 정사각형은 검은색으로 칠해져 있고, 

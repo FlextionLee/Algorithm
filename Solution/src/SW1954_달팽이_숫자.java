@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class SnailNumber {
+public class SW1954_달팽이_숫자 {
         static int dx[] = {0,1,0,-1};
         static int dy[] = {1,0,-1,0};
         public static void main(String[] args) throws Exception {

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FunctionDevelopment_PM {
+public class PM_기능개발 {
     public static void main(String[] args) {
         int[] prog = {95,90,99,99,80,99};
         int[] speed = {1,1,1,1,1,1};
