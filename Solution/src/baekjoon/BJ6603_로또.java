@@ -1,50 +1,54 @@
 package baekjoon;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
-public class BJ {
-
-    //static을 이용해 공유 변수를 만든다.
-    static int k;
+public class BJ6603_로또 {
+    static int N;
     static int[] arr;
-    static boolean[] skip; //스킵 판별
+    static int[] tmp;
+    static boolean[] visited;
+    static StringBuilder sb= new StringBuilder();
+    static StringTokenizer st;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    static void dfs(int line,int count) {
+        while(true){
 
-        if(count == 6) {
-            for(int i = 0; i < k; i++) {
-                if(skip[i] == true)
-                    System.out.print(arr[i] + " ");
-            }
-            System.out.println("");
-        }
+            st = new StringTokenizer(br.readLine());
+            N = Integer.parseInt(st.nextToken());
 
-        for(int j = line; j < k; j++) {
-            skip[j] = true;
-            dfs(j+1, count+1); //재귀호출
-            skip[j] = false; //재귀호출 끝나고 해당 배열을 탐색종료한다.
-        }
-    }
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        while(true) {
-            k = sc.nextInt(); //숫자 갯수, 6~13사이 값
-            if(k == 0) //0입력시 종료
+            if(N==0){
                 break;
-
-            arr = new int[k]; //갯수만큼 배열 생성
-            skip = new boolean[k]; //백트래킹
-
-            for(int i = 0; i < arr.length; i++) { //배열 입력
-                arr[i] = sc.nextInt();
             }
-            Arrays.sort(arr);
 
+            tmp = new int[6];
+            arr = new int[N];
+
+            for(int i=0; i<N; i++){
+                arr[i] = Integer.parseInt(st.nextToken());
+            }
+
+            Arrays.sort(arr);
             dfs(0,0);
-            System.out.println();
+            sb.append("\n");
         }
-        sc.close();
+        System.out.println(sb.toString());
+    }
+    static void dfs(int depth, int start) {
+        if (depth == 6) {
+            for (int i = 0; i < 6; i++) {
+                sb.append(tmp[i]).append(" ");
+            }
+            sb.append("\n");
+            return;
+        }
+
+        for (int i = start; i < N; i++) {
+            tmp[depth] = arr[i];
+            dfs(depth+ 1,  i+1);
+        }
     }
 }
