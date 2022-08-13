@@ -1,4 +1,4 @@
-package studygroup;
+package studygroup.week2;
 
 import java.util.*;
 
