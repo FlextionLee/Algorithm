@@ -28,7 +28,7 @@ public class SW1953_탈주범_검거 {
             {false,false,true,true},
             {true,false,false,true}
     };
-
+    //상우하좌 델타 초기화
     static int dx[] = {-1,0,1,0};
     static int dy[] = {0,1,0,-1};
     public static void main(String[] args) throws Exception{
@@ -67,19 +67,27 @@ public class SW1953_탈주범_검거 {
         while(!q.isEmpty()){
             int[] tmp = q.poll();
             if(tmp[3] <= S){
+                //주어진 시간 S 전까지 이동한 모든 경로를 구해야하기 때문
                 ans++;
             }
             if(tmp[3] > S){
+                //시간이 넘어가버리면 종료
                 return;
             }
+            //tmp[2] == 현재 파이프의 종류
             for(int k=0; k<connect[tmp[2]].length; k++){
+                // 이 파이프가 상우하좌 중 어디로 갈 수 있는지를 2차원 불린 배열으로 정의해놓음
                 if(connect[tmp[2]][k]){
                     int nx = tmp[0] +dx[k];
                     int ny = tmp[1] +dy[k];
+                    //방문,배열의 범위를 벗어나거나, 파이프가 있는 곳이 아니라면 컨티뉴
                     if(nx<0||ny<0||nx>=N||ny>=M||visited[nx][ny]||map[nx][ny]==0) continue;
 
+                    //해당 위치에 가보니 파이프가 있다 -> 하지만 현재 파이프가 갈수 있는 곳과 연결이 되어있는지 확인을 해야함
                     int nextNum = map[nx][ny];
+                    //상우하좌 -> (0+2) % 4 == 2 -> 0은 상 2는 하 이렇게 짝을 맞출 수 있음
                     if(connect[nextNum][(k+2)%4]){
+                        //연결되어있다면 큐에 넣고 3번인덱스에 시간값을 넣어줌
                         q.add(new int[]{nx,ny,map[nx][ny],tmp[3]+1});
                         visited[nx][ny] = true;
                     }
