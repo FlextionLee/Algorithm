@@ -47,6 +47,9 @@ public class BJ18352_특정_거리의_도시_찾기 {
             int v1 = Integer.parseInt(st.nextToken());
             int v2 = Integer.parseInt(st.nextToken());
             int w = 1;
+            /**
+             * 가중치가 1이라서 다익스트라가 아니어도 풀 수 있다.
+             */
             vertex.get(v1).add(new Edge(v2,w));
         }
 
@@ -70,6 +73,7 @@ public class BJ18352_특정_거리의_도시_찾기 {
     private static void dijkstra(int x) {
         //시작정점 x
         pq.offer(new Edge(x,0));
+        // 시작 인덱스를 0으로 초기화
         cost[x] = 0;
         while(!pq.isEmpty()){
             //꺼내면 비용이 가장 적은 것
