@@ -2,96 +2,114 @@ package baekjoon;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.security.Key;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class BJ16236_아기_상어 {
-    static public int N,sx,sy,ans,sSize=2,count;
-    static public int[][] map;
-    static ArrayList<Node> nodes= new ArrayList<>();
-    static int[] dx = {0,0,-1,1};
-    static int[] dy = {1,-1,0,0};
+    static int N,sx,sy,sSize=2;
+    static int ans, eatcount;
+    static int map[][];
+    static int dx[] = {0,0,-1,1};
+    static int dy[] = {1,-1,0,0};
+
+    static class Fish implements Comparable<Fish>{
+        int x;
+        int y;
+        int size;
+        int dis;
+        public Fish(int x,int y,int size, int dis) {
+            this.x = x;
+            this.y = y;
+            this.size = size;
+            this.dis = dis;
+        }
+        @Override
+        public int compareTo(Fish o) {
+            if(this.dis == o.dis) {
+                if(this.x == o.x) {
+                    return Integer.compare(this.y, o.y);
+                }
+                else {
+                    return Integer.compare(this.x, o.x);
+                }
+            }
+            else {
+                return Integer.compare(this.dis, o.dis);
+            }
+        }
+
+    }
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         map = new int[N][N];
 
-        for(int i=0; i<N ;i++){
+        for(int i=0; i<N; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for(int j=0; j<N; j++){
-                map[i][j] = Integer.parseInt(st.nextToken());
+            for(int j=0; j<N; j++) {
+                map[i][j]=Integer.parseInt(st.nextToken());
+                if(map[i][j] == 9) {
+                    sx = i;
+                    sy = j;
+                }
             }
         }
-        while(true){
-            bfs();
-            if(nodes.size()==0){
-                break;
-            }
-            Node tmp = nodes.get(0);
-            for(int i=1; i<nodes.size(); i++){
-                if(tmp.d == nodes.get(i).d){
-                    if(tmp.x == nodes.get(i).x){
-                        if(tmp.y > nodes.get(i).y){
-                            tmp = new Node(nodes.get(i).x,nodes.get(i).y,nodes.get(i).d);
-                        }
-                    }
-                    else if(tmp.d > nodes.get(i).d){
-                        tmp = new Node(nodes.get(i).x,nodes.get(i).y,nodes.get(i).d);
-                    }
-                }
-                else if(tmp.d > nodes.get(i).d){
-                    tmp = new Node(nodes.get(i).x,nodes.get(i).y,nodes.get(i).d);
-                }
-            }
 
-            sx = tmp.x;
-            sy = tmp.y;
-            ans += tmp.d;
-            count++;
-            map[sx][sy] = 0;
-            if(count == sSize){
-                sSize++;
-                count = 0;
-            }
-        }
+        bfs(sx,sy);
         System.out.println(ans);
     }
+    private static void bfs(int sx, int sy) {
+        Queue<int[]> q = new ArrayDeque<>();
+        q.add(new int[] {sx,sy,0});
+        boolean visited[][] = new boolean[N][N];
+        visited[sx][sy] = true;
+        PriorityQueue<Fish> pq = new PriorityQueue<>();
+        int fish = -1;
 
-    private static void bfs() {
-        Queue<Node> q = new ArrayDeque<>();
-        boolean[][] visited = new boolean[N][N];
-        q.add(new Node(sx,sy,0));
+        re:
+        while(!q.isEmpty()) {
+            int[] tmp = q.poll();
 
-        while(!q.isEmpty()){
-            Node tmp = q.poll();
-            if(map[tmp.x][tmp.y] != 0 && map[tmp.x][tmp.y] < sSize){
-                nodes.add(new Node(tmp.x,tmp.y,tmp.d));
-            }
-
-            for(int k=0; k<4; k++){
-                int nx = tmp.x+dx[k];
-                int ny = tmp.y+dy[k];
+            for(int k=0; k<4; k++) {
+                int nx = tmp[0]+dx[k];
+                int ny = tmp[1]+dy[k];
 
                 if(nx<0||ny<0||nx>=N||ny>=N||visited[nx][ny]) continue;
-                if(map[nx][ny] < sSize){
-                   q.add(new Node(nx,ny,tmp.d+1));
-                   visited[nx][ny] =true;
+
+                visited[nx][ny] = true;
+
+                if(map[nx][ny]==0 || map[nx][ny] == sSize){
+                    q.add(new int[]{nx,ny,tmp[2]+1});
+                }
+
+                else if(map[nx][ny] < sSize) {
+                    if(fish==-1 || fish == tmp[2]+1){
+                        pq.offer(new Fish(nx,ny,map[nx][ny],tmp[2]+1));
+                        fish = tmp[2]+1;
+                    }
+                    else{
+                        break re;
+                    }
                 }
             }
         }
-    }
+        if(pq.isEmpty()){
+            return;
+        }
+        else{
+            Fish f = pq.poll();
 
-    static class Node{
-        int x;
-        int y;
-        int d;
-        public Node(int x, int y, int d){
-            this.x=x;
-            this.y=y;
-            this.d=d;
+            ans += f.dis;
+            System.out.println(f.dis+" "+map[f.x][f.y]);
+            map[f.x][f.y]= 0;
+            eatcount++;
+            if(eatcount == sSize){
+                sSize++;
+                eatcount=0;
+            }
+            sx = f.x;
+            sy = f.y;
+            bfs(sx,sy);
         }
     }
+
 }
