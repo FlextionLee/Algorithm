@@ -5,56 +5,58 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class BJ13549_숨바꼭질3 {
-    static int N,K;
-    static int[] dist;
-    static final int INF = Integer.MAX_VALUE/1000;
-    public static void main(String[] args) throws Exception{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static int K, X;
+    static boolean[] visited = new boolean[100001];
+    static int answer = Integer.MAX_VALUE;
+
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader((System.in)));
+
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
-        dist = new int[100001];
+        X = Integer.parseInt(st.nextToken());
 
-        Arrays.fill(dist , INF);
-
-        dijkstra();
-        System.out.println(dist[K]);
+        bfs(K);
+        System.out.println(answer);
     }
 
-    private static void dijkstra() {
-        Queue<int[]> pq = new ArrayDeque<>();
-        dist[N] = 0;
-        pq.add(new int[] {N,0});
+    static void bfs(int K) {
+        Queue<int[]> q = new ArrayDeque<>();
 
-        while(!pq.isEmpty()){
-            int[] tmp = pq.poll();
-            int pos = tmp[0];
-            int time = tmp[1];
-            if(pos == K) return;
-            for(int i=0; i<3; i++){
-                if(i==0){
-                    //+1
-                    if(pos+1<=100000 && dist[pos+1] > time+1){
-                        dist[pos+1] = time+1;
-                        pq.add(new int[]{pos+1,time+1});
-                    }
-                }
-                else if(i==1){
-                    //-1
-                    if(pos-1>=0 && dist[pos-1] > time+1){
-                        dist[pos-1] = time+1;
-                        pq.add(new int[]{pos-1,time+1});
-                    }
-                }
-                else{
-                    //*2
-                    if(pos*2<=100000 && dist[pos*2] > time){
-                        dist[pos*2] = time;
-                        pq.add(new int[]{pos*2,time});
-                    }
-                }
+        visited[K] = true;
+        q.offer(new int[]{K, 0});
+
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int pos = cur[0];
+            int time = cur[1];
+
+            visited[pos] =true;
+
+            if (pos == X) {
+                answer =Math.min(answer,time);
+                return;
             }
+
+
+            if (pos * 2 <= 100000 && !visited[pos * 2]) {
+                q.offer(new int[]{pos * 2, time});
+            }
+
+
+            if (pos + 1 <= 100000 && !visited[pos + 1]) {
+                q.offer(new int[]{pos + 1, time + 1});
+
+            }
+
+            if (pos - 1 >= 0 && !visited[pos - 1]) {
+                q.offer(new int[]{pos - 1, time + 1});
+
+            }
+
+
         }
+
     }
 }

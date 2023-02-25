@@ -1,63 +1,101 @@
-package undone;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class BJ1238_파티 {
-    static int N,M,X;
-    static int[][] map;
-    static int[][] dist;
-    static int[] student;
+
+    private static final int INF = 1000000000;
+
+    private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static int N, M, X;
+    private static List<List<Node>> list, reverseList;
+    private static int[] dist, reverseDist;
+
+    static class Node implements Comparable<Node> {
+        int index;
+        int distance;
+
+        public Node(int index, int distance) {
+            this.index = index;
+            this.distance = distance;
+        }
+
+        public int compareTo(Node n) {
+            return this.distance - n.distance;
+        }
+    }
 
     public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
         X = Integer.parseInt(st.nextToken());
-        map = new int[N+1][N+1];
-        dist = new int[N+1][N+1];
 
-        init();
+        list = new ArrayList<>();
+        reverseList = new ArrayList<>();
+        for (int i = 0; i <= N; i++) {
+            list.add(new ArrayList<>());
+            reverseList.add(new ArrayList<>());
+        }
 
-        for(int i=0; i<M; i++){
+        dist = new int[N + 1];
+        reverseDist = new int[N + 1];
+        Arrays.fill(dist, INF);
+        Arrays.fill(reverseDist, INF);
+
+        for (int i = 1; i <= M; i++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
-            map[a][b] = c;
+            int u = Integer.parseInt(st.nextToken());
+            int v = Integer.parseInt(st.nextToken());
+            int weight = Integer.parseInt(st.nextToken());
+
+            list.get(u).add(new Node(v, weight));
+            reverseList.get(v).add(new Node(u, weight));
         }
 
-        dijkstra();
+        dijkstra(list, dist, X);
+        //dijkstra(reverseList, reverseDist, X);
+
+        print();
+        br.close();
     }
 
-    private static void init() {
-        for(int i=0; i<N; i++){
-            for(int j=0; j<N; j++){
-                dist[i][j] = Integer.MAX_VALUE/1000;
+    private static void dijkstra(List<List<Node>> list, int[] distance, int start) {
+        boolean[] visited = new boolean[N + 1];
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(start, 0));
+
+        distance[start] = 0;
+
+        while (!pq.isEmpty()) {
+            int idx = pq.poll().index;
+
+            if (visited[idx]) {
+                System.out.println(idx+"이미 방문했는데?");
+                continue;
             }
-        }
-    }
+            System.out.println(idx+"방문찍음");
+            visited[idx] = true;
 
-    private static void dijkstra() {
-        for(int i=0; i<N; i++) {
-            Queue<int[]> q = new ArrayDeque<>();
-            init();
-            q.add(new int[] {i,0});
-            while(!q.isEmpty()){
-                int tmp[] = q.poll();
-
-                for(int j=0; j<N; j++){
-                   if(map[tmp[0]][j]!=0){
-
-                   }
+            for (Node node : list.get(idx)) {
+                if(visited[node.index]){
+                    System.out.println(node.index+"난 이미 방문한적이 있어");
+                }
+                if (!visited[node.index] && distance[node.index] > distance[idx] + node.distance) {
+                    distance[node.index] = distance[idx] + node.distance;
+                    pq.add(new Node(node.index, distance[node.index]));
+                    System.out.println(node.index+"넣음");
                 }
             }
-
         }
+    }
+
+    private static void print() {
+        int ans = -1;
+        for (int i = 1; i <= N; i++) {
+            ans = Math.max(ans, dist[i] + reverseDist[i]);
+        }
+        System.out.println(ans);
     }
 }

@@ -26,10 +26,13 @@ public class BJ1806_부분합 {
         int min = Integer.MAX_VALUE;
         int sum = 0;
         while(rt<=N) {
+            System.out.println(lt+" "+rt+" "+sum+" "+min);
            if(sum < M){
+               //해당 값보다 작으면 rt값 올리고 담음
                sum += arr[rt++];
            }
            else if(sum > M){
+               //min 은 = 현재
                min = Math.min(min,rt-lt);
                sum -= arr[lt++];
            }
@@ -37,6 +40,7 @@ public class BJ1806_부분합 {
                min = Math.min(min,rt-lt);
                sum += arr[rt++];
            }
+
         }
         System.out.println(min==Integer.MAX_VALUE ? 0 : min);
     }

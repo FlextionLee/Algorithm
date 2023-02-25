@@ -1,64 +1,73 @@
 package swea;
-
-import com.sun.xml.internal.bind.v2.model.core.MaybeElement;
-
 import java.util.*;
 import java.io.*;
 public class SW2105_디저트_카페 {
-    static int T,N,max;
+    static int T,N,ans;
     static int[][] map;
-    static int[] dessert;
-    static int[] dx = {1,1,-1,-1};
-    static int[] dy = {1,-1,-1,1};
+    static boolean[] visited;
+    /**
+     * 0일땐 우하 좌하
+     * 1일땐 좌하 좌상
+     * 2일땐 좌상 우상
+     * 3일땐 우상
+     */
+    static boolean[][] dxy = {
+            {true,true,false,false},
+            {false,true,true,false},
+            {false,false,true,false},
+    };
+    static int dx[] = {1,1,-1,-1};
+    static int dy[] = {1,-1,-1,1};
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         T = Integer.parseInt(br.readLine());
+
         for(int t=1; t<=T; t++){
             N = Integer.parseInt(br.readLine());
             map = new int[N][N];
+            ans = -1;
+            visited = new boolean[101];
             for(int i=0; i<N; i++){
                 StringTokenizer st = new StringTokenizer(br.readLine());
                 for(int j=0; j<N; j++){
                     map[i][j] = Integer.parseInt(st.nextToken());
                 }
             }
-
-            max = -1;
-            for(int i=0; i<N; i++){
-                for(int j=0; j<N; j++){
-                    dessert = new int[101];
-                    dessert[map[i][j]] = 1;
-                    dfs(i,j,-1,-1,i,j,0,1);
+            for(int i=0; i<N-2; i++){
+                for(int j=1; j<N; j++){
+                    recur(i,j,i,j,0,1);
+                    visited[map[i][j]] = false;
                 }
             }
-            System.out.println(max);
+
+            System.out.println("#"+t+" "+ans);
         }
+
     }
 
-    /**
-     * 우하->좌하->좌상->우상
-     * 4각형이 그려지는가? -> 가지치기 측면
-     * 디저트를 이미 먹었나?
-     * 이전꺼에 가면안됨 -> 4방탐색 후 결정값이 내가 이전에 결정한 곳이면 가면안되니까
-     *
-     * 처음 지점으로 돌아왔다면 맥스 갱신해주기
-     */
-    private static void dfs(int i, int j,int prevx, int prevy, int ni,int nj, int mode,int count) {
-        for(int k=mode; k<4; k++){
-            int nx = ni+dx[k];
-            int ny = nj+dy[k];
+    static void recur(int tr, int tc, int nr, int nc, int dir, int sum) {
+        visited[map[nr][nc]]=true;
+        // 방향 초과(0~3)
+        if(dir>3) return;
+        // 각 방향에 따른 좌표 변화
+        nr += dx[dir];
+        nc += dy[dir];
 
-            if(nx<0||nx>=N||ny<0||ny>=N) continue;
-            if(nx==prevx && ny==prevy) continue;
-            if(i==nx && j==ny) {
-                max = Math.max(max, count);
-                return;
-            }
-            if(dessert[map[nx][ny]] != 0) continue;
-
-            dessert[map[nx][ny]] = 1;
-            dfs(i,j,ni,nj,nx,ny,k,count+1);
-            dessert[map[nx][ny]] = 0;
+        //돌아서 원래 점으로 돌아옴
+        if(nr==tr && nc==tc) {
+            ans = Math.max(ans, sum);
+            return;
         }
-    }
+
+        // 가장 위에 찍힌 점보다 더 위에 올라갈 수 없음.(작을 수 없음)
+        if(nr<0 || nc<0 || nr> N-1|| nc>N-1) return;
+
+        //이미 방문했던 디저트 가게라면 return
+        if(visited[map[nr][nc]]) return;
+
+        visited[map[nr][nc]]=true;
+        recur(tr,tc,nr,nc, dir, sum+1);
+        recur(tr,tc,nr,nc,dir+1, sum+1);
+        visited[map[nr][nc]]=false;
+    }//end recur
 }
