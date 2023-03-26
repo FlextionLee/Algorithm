@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class BJ2178_미로_탐색 {
+public class
+BJ2178_미로_탐색 {
     static int N,M;
     static int min = Integer.MAX_VALUE;
     static int map[][];
