@@ -1,5 +1,5 @@
 package studygroup.week26;
-
+import java.util.*;
 public class PG_인사고과 {
     static class Emp{
         int x;
