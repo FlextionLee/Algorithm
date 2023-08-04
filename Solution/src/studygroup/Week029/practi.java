@@ -1,47 +1,45 @@
 package studygroup.Week029;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public class practi{
-    public static void main(String[] args) throws Exception{
+    static int n,m;
+    static int[][] map;
+    static boolean[][] visited;
+    public static void main(String[] args) throws IOException {
+        // System.setIn(new FileInputStream("src/input.txt"));
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int num = Integer.parseInt(st.nextToken());
-        int n = Integer.parseInt(st.nextToken());
-
-        char[] arr = new char[num];
-        st = new StringTokenizer(br.readLine());
-        for(int i=0; i<num; i++){
-            arr[i] = st.nextToken().charAt(0);
-        }
-
-        int lt = 0;
-        int rt = 0;
-        int ans = 0;
-
-        while(lt<=rt && rt < arr.length){
-            if(arr[rt] == '0'){
-                if(n > 0){
-                    rt++;
-                    n--;
-                }else{
-                    //0을 만날때까지 lt++
-                    while(arr[lt] == '1'){
-                        lt++;
-                    }
-                    //0을 지나쳐야 하니까 lt++
-                    lt++;
-                    n++;
-                }
-            }else{
-                rt++;
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        map = new int[n][m];
+        visited= new boolean[n][m];
+        for(int i=0; i<n; i++){
+            String str = br.readLine();
+            for(int j=0; j<m; j++){
+                map[i][j] = str.charAt(j)-'0';
             }
-            ans = Math.max(ans,rt-lt);
         }
-        System.out.println(ans);
+        visited[0][0] = true;
+        dfs(0,0,"");
+    }
+    public static void dfs(int x, int y,String str){
+
+        for(int i=y+1; i<m; i++){
+            if(!visited[x][i]){
+                visited[x][i] = true;
+                dfs(x,i,str+map[x][i]);
+                visited[x][i] = false;
+            }
+        }
+        for(int i=x+1; i<n; i++){
+            if(!visited[i][y]){
+                visited[i][y] = true;
+                dfs(i,y,str+map[x][i]);
+                visited[i][y] = false;
+            }
+        }
     }
 }
