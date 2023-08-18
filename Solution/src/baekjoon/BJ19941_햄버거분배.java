@@ -18,12 +18,16 @@ public class BJ19941_햄버거분배 {
         Queue<Integer> q = new ArrayDeque<>();
         int count = 0;
         for(int i=0; i<str.length(); i++){
+            //햄버거면 큐에 넣는다.
             if(str.charAt(i)=='H'){
                 q.add(i);
+            //사람이면
             }else{
                 boolean ch = true;
+                //큐가 빌때까지 탐색 만약 먹을수 있는 값이라면 먹는다.
                 while(!q.isEmpty()){
                     if(i-q.peek() <= m){
+                        System.out.println(q.peek()+" p="+i);
                         q.poll();
                         count++;
                         ch = false;
@@ -32,12 +36,15 @@ public class BJ19941_햄버거분배 {
                         q.poll();
                     }
                 }
-
+                //이전에 나왔던 햄버거로는 충족을 못한다면
                 if(ch){
-                    for(int j=i; j<=i+m; j++){
+                    for(int j=i+1; j<i+m; j++){
                         if(j>=str.length()) break;
+                        if(str.charAt(j) == 'P'){
+                            i=j;
+                        }
                         if(str.charAt(j)=='H'){
-                            //System.out.println(j+" p="+i);
+                            System.out.println(j+" p="+i);
                             count++;
                             i = j;
                             break;
