@@ -1,6 +1,7 @@
 package baekjoon;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -19,34 +20,21 @@ public class BJ20922_겹치는건싫어 {
         }
         int lt = 0;
         int rt = 0;
-        int ans =0;
-        while(lt<=rt){
-            if(rt >= n) break;
-            //맵에 있는 값일때
-            if(map.containsKey(arr[rt])){
-                //중복허용 최대치로 갔을때
-                if(map.get(arr[rt]) == k){
-                    while(true){
-                        if(arr[lt] == arr[rt]){
-                            if(map.get(arr[lt]) == 1){
-                                map.remove(arr[lt]);
-                            }else{
-                                map.put(arr[lt], map.get(arr[lt])-1);
-                            }
-                            lt++;
-                            break;
-                        }
+        int ans = 0;
+        while(lt<=rt && rt<n){
+            //나왔던 수
+            if(map.containsKey(arr[rt])) {
+                //k번 나왔으면 더이상 진행이 불가능 lt를 증가시켜보자
+                if (map.get(arr[rt]) == k) {
+                    while (map.get(arr[rt]) == k) {
+                        map.put(arr[lt], map.get(arr[lt]) -1);
                         lt++;
                     }
-                    //중복허용이 될 때
-                }else{
-                    map.put(arr[rt],map.get(arr[rt])+1);
                 }
-            }else{
-                map.put(arr[rt],map.getOrDefault(arr[rt],0)+1);
             }
-            System.out.println(lt+" "+rt);
-            ans = Math.max(ans, (rt-lt));
+            map.put(arr[rt] , map.getOrDefault(arr[rt],0)+1);
+            //안나왔던 수
+            ans = Math.max(ans,(rt-lt+1));
             rt++;
         }
         System.out.println(ans);
