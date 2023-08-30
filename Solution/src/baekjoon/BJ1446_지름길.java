@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class BJ1446_지름길 {
-    public class Main {
         static class ShortPath {
             int from, to, dist;
 
@@ -71,5 +70,4 @@ public class BJ1446_지름길 {
             }
             System.out.println(dp[d]);
         }
-    }
 }
