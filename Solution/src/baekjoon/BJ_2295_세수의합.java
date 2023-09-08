@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class BJ_2295_세수의합 {
+public class
+BJ_2295_세수의합 {
     static int N;
     static int[] num;
     static ArrayList<Integer> twoSum;
