@@ -47,12 +47,14 @@ public class BJ10423_전기가부족해 {
 
         for(Edge e : list){
             if(union(e.start,e.end)){
-                System.out.println(e.start+" "+e.end+" "+e.val);
                 ans += e.val;
                 count++;
             }
         }
 
+        for(int i=0; i<parent.length; i++){
+            System.out.print(parent[i]+" ");
+        }
         System.out.println(ans);
     }
 
