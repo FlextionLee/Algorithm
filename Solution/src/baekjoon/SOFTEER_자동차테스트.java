@@ -2,7 +2,7 @@ package baekjoon;
 import java.util.*;
 import java.io.*;
 
-public class SOFTTEER_자동차테스트 {
+public class SOFTEER_자동차테스트 {
     public static void main(String args[])throws Exception
     {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
