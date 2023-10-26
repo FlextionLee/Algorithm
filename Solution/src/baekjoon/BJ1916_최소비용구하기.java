@@ -40,6 +40,9 @@ public class BJ1916_최소비용구하기 {
         int[] dist = new int[n+1];
         Arrays.fill(dist,Integer.MAX_VALUE);
         dijkstra(dist,start,end);
+        for(int i=0; i<dist.length; i++){
+            System.out.print(dist[i]+" ");
+        }
     }
 
     private static void dijkstra(int[] dist,int start, int end) {
