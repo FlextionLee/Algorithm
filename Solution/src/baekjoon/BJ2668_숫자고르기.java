@@ -4,42 +4,39 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.*;
 public class BJ2668_숫자고르기 {
-        static ArrayList<Integer> list;
-        static boolean[] visited;
-        static int[] num;
-
-        public static void main(String[] args) {
-            Scanner scan = new Scanner(System.in);
-
-            //n개의 정수를 입력받는다.
-            int n = scan.nextInt();
-            num = new int[n + 1];
-            for(int i = 1; i <= n; i++) {
-                num[i] = scan.nextInt();
-            }
-
-            //순서대로 사이클이 발생하는지 dfs로 확인한다.
-            list = new ArrayList<>();
-            visited = new boolean[n + 1];
-            for(int i = 1; i <= n; i++) {
-                visited[i] = true;
-                dfs(i, i);
-                visited[i] = false;
-            }
-
-            Collections.sort(list); //작은 수 부터 출력하므로 정렬한다.
-            System.out.println(list.size());
-            for(int i = 0; i < list.size(); i++) {
-                System.out.println(list.get(i));
-            }
+    static int[] map;
+    static boolean[] visited;
+    static ArrayList<Integer> list;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n =Integer.parseInt(br.readLine());
+        map = new int[n+1];
+        for(int i=1; i<=n; i++){
+            map[i] = Integer.parseInt(br.readLine());
+        }
+        visited = new boolean[n+1];
+        list = new ArrayList<>();
+        for(int i=1; i<=n; i++){
+            visited[i] = true;
+            dfs(i,i,1);
+            visited[i] = false;
+        }
+        Collections.sort(list);
+        System.out.println(list.size());
+        for(int i : list){
+            System.out.println(i);
+        }
+    }
+    public static void dfs(int dep,int first, int count){
+        if(!visited[map[dep]]){
+            visited[map[dep]] = true;
+            dfs(map[dep],first,count+1);
+            visited[map[dep]] = false;
         }
 
-        public static void dfs(int start, int target) {
-            if(visited[num[start]] == false) {
-                visited[num[start]] = true;
-                dfs(num[start], target);
-                visited[num[start]] = false;
-            }
-            if(num[start] == target) list.add(target); //사이클 발생시 해당 숫자를 list에 담아준다.
+        if(map[dep] == first){
+            list.add(first);
         }
+
+    }
 }
