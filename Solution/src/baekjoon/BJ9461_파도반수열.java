@@ -25,6 +25,5 @@ public class BJ9461_파도반수열 {
         for(int i=0; i<n; i++){
             System.out.println(dp[idx[i]-1]);
         }
-
     }
 }
